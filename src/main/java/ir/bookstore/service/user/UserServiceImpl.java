@@ -1,5 +1,6 @@
 package ir.bookstore.service.user;
 
+import ir.bookstore.dto.request.UserRequest;
 import ir.bookstore.dto.response.UserResponse;
 import ir.bookstore.exception.RuleException;
 import ir.bookstore.model.User;
@@ -17,10 +18,20 @@ public class UserServiceImpl implements UserService{
 
 
     @Override
-    public UserResponse save(User user) {
-        Optional<User> byUsername = userRepository.findByUsername(user.getUsername());
-        if(byUsername.isPresent())throw  new RuleException("username.is.exist");
-        User saveUser = userRepository.save(user);
+    public UserResponse save(UserRequest userRequest) {
+        Optional<User> byUsername = userRepository.findByUsername(userRequest.getUsername());
+        if(byUsername.isPresent())
+            throw  new RuleException("username.is.exist");
+        return createUserResponse(userRepository.save(getBuildUser(userRequest)));
+    }
+
+    private static User getBuildUser(UserRequest userRequest) {
+        return User.builder()
+                .password(userRequest.getPassword())
+                .username(userRequest.getUsername()).build();
+    }
+
+    private UserResponse createUserResponse(User saveUser) {
         return UserResponse.builder()
                 .id(saveUser.getId())
                 .username(saveUser.getUsername())

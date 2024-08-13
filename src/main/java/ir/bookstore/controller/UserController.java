@@ -1,6 +1,7 @@
 package ir.bookstore.controller;
 
 
+import ir.bookstore.dto.request.UserRequest;
 import ir.bookstore.dto.response.UserResponse;
 import ir.bookstore.model.User;
 import ir.bookstore.service.user.UserService;
@@ -20,7 +21,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserResponse> save(@RequestBody User user){
-        return ResponseEntity.ok(userService.save(user));
+    public ResponseEntity<UserResponse> save(@RequestBody UserRequest userRequest){
+        return ResponseEntity.ok(userService.save(userRequest));
     }
 }
