@@ -7,19 +7,21 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class ExceptionController {
     @ExceptionHandler(RuleException.class)
-    public ResponseEntity<ExceptionResponse> handleRuleException(RuleException ruleException){
+    public ResponseEntity<List<ExceptionResponse>> handleRuleException(RuleException ruleException){
         return  ResponseEntity
                     .status(400)
-                    .body(getBuild(ruleException));
+                    .body(Collections.singletonList(getBuild(ruleException)));
     }
 
-    private static ExceptionResponse getBuild(RuleException ruleException) {
+    private  ExceptionResponse getBuild(RuleException ruleException) {
         return ExceptionResponse.builder()
                 .message(ruleException.getMessage())
                 .code(ruleException.getMessage())
