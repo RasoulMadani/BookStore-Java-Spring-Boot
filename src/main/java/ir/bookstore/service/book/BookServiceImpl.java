@@ -44,7 +44,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<BookResponse> findByName(String name) {
-       return bookRepository.findByNameV2("%" +name + "%")
+       return bookRepository.findByNameContains(name)
                 .stream().map((book -> BookResponse.builder()
                         .name(book.getName())
                         .id(book.getId())
