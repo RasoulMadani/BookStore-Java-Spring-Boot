@@ -5,6 +5,8 @@ import ir.bookstore.dto.response.BookResponse;
 import ir.bookstore.exception.RuleException;
 import ir.bookstore.model.Book;
 import ir.bookstore.repository.BookRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -25,6 +27,18 @@ public class BookServiceImpl implements BookService {
         Book book = bookRepository.save(createBook(bookRequest));
         return createBookResponse(book);
     }
+
+
+    @Override
+    public Page<BookResponse> findAll(Pageable pageable) {
+        return bookRepository.findAll(pageable)
+                .map((book)->BookResponse.builder()
+                        .id(book.getId())
+                        .name(book.getName())
+                        .price(book.getPrice())
+                        .build());
+    }
+
     private Book createBook(BookRequest bookRequest){
         return Book.builder()
                 .name(bookRequest.getName())
