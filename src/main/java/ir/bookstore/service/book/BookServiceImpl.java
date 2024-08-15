@@ -54,9 +54,20 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookResponse findById(Long id) {
+        Book book = getBook(id);
+        return createBookResponse(book);
+    }
+
+    private Book getBook(Long id) {
         Book book = bookRepository.findById(id)
                 .orElseThrow(() -> new RuleException("book.not.found"));
-        return createBookResponse(book);
+        return book;
+    }
+
+    @Override
+    public void deleted(Long id) {
+        Book byId = getBook(id);
+        bookRepository.delete(byId);
     }
 
     private Book createBook(BookRequest bookRequest){
