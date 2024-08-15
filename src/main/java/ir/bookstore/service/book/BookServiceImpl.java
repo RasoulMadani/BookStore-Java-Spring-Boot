@@ -70,7 +70,7 @@ public class BookServiceImpl implements BookService {
     @Transactional
     public void deleted(Long id) {
         Book byId = getBook(id);
-        byId.setDeleted(LocalDateTime.now());
+        bookRepository.delete(byId);
     }
 
     private Book createBook(BookRequest bookRequest){
