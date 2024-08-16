@@ -35,6 +35,13 @@ public class UserServiceImpl implements UserService{
         }
     }
 
+    @Override
+    public void changeEnable(Boolean enable, Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new RuleException("user.not.found"));
+        user.setEnabled(enable);
+        userRepository.save(user);
+    }
+
     private static User getBuildUser(UserRequest userRequest) {
         return User.builder()
                 .password(userRequest.getPassword())

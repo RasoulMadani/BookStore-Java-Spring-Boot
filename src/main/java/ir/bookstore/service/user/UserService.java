@@ -9,4 +9,6 @@ public interface UserService {
     UserResponse save(UserRequest user);
 
     void login(UserLoginRequest userLoginRequest);
+
+    void changeEnable(Boolean enable, Long id);
 }
