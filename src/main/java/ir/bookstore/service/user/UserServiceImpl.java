@@ -6,6 +6,8 @@ import ir.bookstore.dto.response.UserResponse;
 import ir.bookstore.exception.RuleException;
 import ir.bookstore.model.User;
 import ir.bookstore.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -40,6 +42,11 @@ public class UserServiceImpl implements UserService{
         User user = userRepository.findById(id).orElseThrow(() -> new RuleException("user.not.found"));
         user.setEnabled(enable);
         userRepository.save(user);
+    }
+
+    @Override
+    public Page<User> findAll(Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
 
     private static User getBuildUser(UserRequest userRequest) {
