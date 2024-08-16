@@ -1,5 +1,6 @@
 package ir.bookstore.service.user;
 
+import ir.bookstore.dto.request.UserLoginRequest;
 import ir.bookstore.dto.request.UserRequest;
 import ir.bookstore.dto.response.UserResponse;
 import ir.bookstore.exception.RuleException;
@@ -23,6 +24,15 @@ public class UserServiceImpl implements UserService{
         if(byUsername.isPresent())
             throw  new RuleException("username.is.exist");
         return createUserResponse(userRepository.save(getBuildUser(userRequest)));
+    }
+
+    @Override
+    public void login(UserLoginRequest userLoginRequest) {
+        User user = userRepository.findByUsername(userLoginRequest.getUsername())
+                .orElseThrow(() -> new RuleException("user.not.found"));
+        if(!user.getPassword().equals(userLoginRequest.getPassword())){
+            throw new RuleException("user.not.found");
+        }
     }
 
     private static User getBuildUser(UserRequest userRequest) {
